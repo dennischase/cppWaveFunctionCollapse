@@ -31,4 +31,5 @@ This happens until all **Kernals** are **Collapsed** and the board is filled out
 When running the program, enter the height and width of the map you'd like to generate.
 Next, choose if you want to see the board *animate* by showing the generation of one piece at a time. 
 If you want to, then choose the speed.
-**WARNING**: if you are sensitive to flashing images, 'Fast' flashes a lot.
+
+> **WARNING**: if you are sensitive to flashing images, 'Fast' flashes a lot.
