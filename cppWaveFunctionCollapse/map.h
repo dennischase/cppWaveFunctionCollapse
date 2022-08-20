@@ -76,6 +76,8 @@ class Map {
 public:
 	Map(int, int);
 	void draw();
+	void test();
+	void tester(int);
 	std::vector<uChars> getConstraints(uChars, int);
 	void collapse(bool, int);
 
@@ -87,6 +89,7 @@ private:
 	int width{ 0 };
 	std::map<uChars, std::vector<std::vector<uChars>>> constraints;
 	int maxEntropy;
+	bool animate{ false };
 
 	void chooseRandomFromAvailable(int, int);
 	void findLowestEntropyCount(int&, int&);

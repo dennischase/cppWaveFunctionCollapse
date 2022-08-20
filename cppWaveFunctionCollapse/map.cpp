@@ -10,6 +10,18 @@
 #include <thread>
 #include <windows.h>
 
+/// <summary>
+/// sets cursor at x,y for printing
+/// </summary>
+/// <param name="x"></param>
+/// <param name="y"></param>
+void gotoxy(int x, int y)
+{
+	COORD coord;
+	coord.X = x;
+	coord.Y = y;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
 
 /// <summary>
 /// Stolen from the internet, just clears the console.
@@ -166,6 +178,21 @@ void Map::draw() {
 	}
 }
 
+void Map::test()
+{
+	ClearScreen();
+	tester(0);
+}
+
+void Map::tester(int i) {
+	gotoxy(i, i);
+	std::cout << i;
+	if (i<100)
+	{
+		tester(i+1);
+	}
+}
+
 std::vector<uChars> Map::getConstraints(uChars uc, int dir)
 {
 	std::map<uChars, std::vector<std::vector<uChars>>>::iterator it = constraints.find(uc);
@@ -177,6 +204,11 @@ void Map::chooseRandomFromAvailable(int h, int w) {
 	board[h][w].assignRandomly();
 	spreadEntropy(h, w);
 	remainingKernals -= 1;
+	if (animate)
+	{
+		gotoxy(w, h);
+		printf("%c", board[h][w].self);
+	}
 }
 
 /// <summary>
@@ -213,13 +245,13 @@ void Map::findLowestEntropyCount(int & lowest, int & low) {
 /// </summary>
 /// <param name="animate"> will animate if true </param>
 /// <param name="animateSpeed"> speed of animation in milliseconds </param>
-void Map::collapse(bool animate, int animateSpeed) {
+void Map::collapse(bool animated, int animateSpeed) {
+	animate = animated;
 	if (animate)
 	{
-		printf("WARNING: FLASHING IMAGES");
-		std::chrono::seconds flashWarningTime{ 5 };
-		std::this_thread::sleep_for(flashWarningTime);
+		std::chrono::seconds flashWarningTime{ 3 };
 		dura = (std::chrono::milliseconds)animateSpeed;
+		ClearScreen();
 	}
 	
 	// loop until all Kernals are collapsed
@@ -259,8 +291,8 @@ void Map::collapse(bool animate, int animateSpeed) {
 			// pause to create animation
 			std::this_thread::sleep_for(dura);
 
-			ClearScreen();
-			draw();
+			//ClearScreen();
+			//draw();
 		}
 
 
@@ -270,6 +302,10 @@ void Map::collapse(bool animate, int animateSpeed) {
 	if (!animate)
 	{
 		draw();
+	}
+	else 
+	{
+		gotoxy(width, height);
 	}
 }
 

@@ -56,17 +56,17 @@ int main()
         {
             if (animateInput == "F")
             {
-                animateSpeed = 50;
+                animateSpeed = 0;
                 break;
             }
             if (animateInput == "M")
             {
-                animateSpeed = 300;
+                animateSpeed = 100;
                 break;
             }
             if (animateInput == "S")
             {
-                animateSpeed = 1000;
+                animateSpeed = 500;
                 break;
             }
         }
@@ -74,4 +74,5 @@ int main()
 
     Map map = Map(height, width);
     map.collapse(animate, animateSpeed);
+    //map.test();
 }
