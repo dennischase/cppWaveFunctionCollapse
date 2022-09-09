@@ -76,8 +76,6 @@ class Map {
 public:
 	Map(int, int);
 	void draw();
-	void test();
-	void tester(int);
 	std::vector<uChars> getConstraints(uChars, int);
 	void collapse(bool, int);
 

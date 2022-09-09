@@ -1,0 +1,25 @@
+'Struct' Kernal
+-------------------------
++ self block
++ entropy set<block>
++ location vect3
++ collapsed boolean
+-------------------------
+
+
+
+
+Class Map
+-------------------------
++ Map 3DArray<Kernal>
++ X_Dim int
++ Y_Dim int
++ Z_Dim int
+- RemainingKernals int
+
+-------------------------
++ Collapse() void
++ Draw() void
+- SpreadEntropy(vect3) void
+- AssignFromEntropy(vect3) void
+- FindLowestEntropyCount() int

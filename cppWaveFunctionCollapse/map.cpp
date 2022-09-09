@@ -70,6 +70,12 @@ using std::string;
 using std::pair;
 using std::vector;
 
+/// <summary>
+/// Select a random number within 2 inputs, inclusive
+/// </summary>
+/// <param name="min"> Lowest desired number </param>
+/// <param name="max"> Highest desired number </param>
+/// <returns></returns>
 int random(int min, int max) {
 	if (min == max)
 	{
@@ -104,6 +110,10 @@ vector<uChars> intersection(vector<uChars> v1,
 	return v3;
 }
 
+/// <summary>
+/// Returns how many possible uChars are still in the entropy of this Kernal
+/// </summary>
+/// <returns></returns>
 int Kernal::entropyCount() {
 	return (int)entropy.size();
 }
@@ -117,6 +127,10 @@ void Kernal::assignRandomly() {
 	collapsed = true;
 }
 
+/// <summary>
+/// Has this Kernal been determined and locked in?
+/// </summary>
+/// <returns></returns>
 bool Kernal::isCollapsed() {
 	return collapsed;
 }
@@ -167,6 +181,9 @@ Map::Map(int h, int w) {
 	remainingKernals = width * height;
 }
 
+/// <summary>
+/// Visual display of the map, writing a single character to a location in the console. No longer flashes with each write.
+/// </summary>
 void Map::draw() {
 	for (int i = 0; i < height; i ++)
 	{
@@ -178,21 +195,12 @@ void Map::draw() {
 	}
 }
 
-void Map::test()
-{
-	ClearScreen();
-	tester(0);
-}
-
-void Map::tester(int i) {
-	gotoxy(i, i);
-	std::cout << i;
-	if (i<100)
-	{
-		tester(i+1);
-	}
-}
-
+/// <summary>
+/// Gets the list of possible uChars to connect to the passed in uChar in the direction from the passed in uChar
+/// </summary>
+/// <param name="uc"> uChar to connect to </param>
+/// <param name="dir"> 0:North 1:East 2:South 3:West </param>
+/// <returns> list of valid uChars </returns>
 std::vector<uChars> Map::getConstraints(uChars uc, int dir)
 {
 	std::map<uChars, std::vector<std::vector<uChars>>>::iterator it = constraints.find(uc);
@@ -200,6 +208,11 @@ std::vector<uChars> Map::getConstraints(uChars uc, int dir)
 	return it->second[dir];
 }
 
+/// <summary>
+/// Assign the kernal at h,w to a random uChar from its entropy
+/// </summary>
+/// <param name="h"> location(y) </param>
+/// <param name="w"> location(x) </param>
 void Map::chooseRandomFromAvailable(int h, int w) {
 	board[h][w].assignRandomly();
 	spreadEntropy(h, w);
