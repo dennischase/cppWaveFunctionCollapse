@@ -74,5 +74,4 @@ int main()
 
     Map map = Map(height, width);
     map.collapse(animate, animateSpeed);
-    //map.test();
 }
