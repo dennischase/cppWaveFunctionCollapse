@@ -54,7 +54,7 @@ int main()
         {
             std::string entropyInput;
 
-            std::cout << "Would you like the entropy to be shown in the animation? (y/n): ";
+            std::cout << "Show entropy? (y/n): ";
             std::cin >> entropyInput;
 
 
@@ -97,7 +97,7 @@ int main()
                     }
                     if (animateInput == "M")
                     {
-                        animateSpeed = 100;
+                        animateSpeed = 50;
                         break;
                     }
                     if (animateInput == "S")
