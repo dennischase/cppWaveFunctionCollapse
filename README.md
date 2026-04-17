@@ -1,10 +1,10 @@
 # C++ Wave Function Collapse
 
-https://github.com/user-attachments/assets/fa13506b-055c-48aa-a1c7-87ed2e0f6f4f
+<img width="356" height="408" alt="WFC" src="https://github.com/user-attachments/assets/3d11f29d-9353-41d6-9f0b-5936dc998b5f" />
+
+https://github.com/user-attachments/assets/44635bd0-533c-450e-9bcb-6a8b40dd3124
 
 **Dennis Chase**
-
-Aug 2022
 
 ## Summary
 
@@ -32,4 +32,5 @@ This happens until all **Kernals** are **Collapsed** and the board is filled out
 
 When running the program, enter the height and width of the map you'd like to generate.
 Next, choose if you want to see the board *animate* by showing the generation of one piece at a time. 
-If you want to, then choose the speed.
+Next, choose if you want the entropy to be shown in the animation.
+Lastly, choose the speed of the animation.
