@@ -77,7 +77,7 @@ public:
 	Map(int, int);
 	void draw();
 	std::vector<uChars> getConstraints(uChars, int);
-	void collapse(bool, int);
+	void collapse(bool, int, bool);
 
 private:
 	std::chrono::milliseconds dura{50}; // time to sleep for animation
@@ -89,8 +89,9 @@ private:
 	int maxEntropy;
 	bool animate{ false };
 
-	void chooseRandomFromAvailable(int, int);
+	void chooseRandomFromAvailable(int, int, bool);
 	void findLowestEntropyCount(int&, int&);
-	void spreadEntropy(int, int);
+	void drawEntropy(int, int);
+	void spreadEntropy(int, int, bool);
 	void pupulateConstraints();
 };

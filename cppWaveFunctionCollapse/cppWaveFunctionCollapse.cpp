@@ -3,75 +3,113 @@
 
 int main()
 {
-    int height;
-    int width;
-    bool animate;
-    std::string animateInput;
-    int animateSpeed{0};
+    bool debug = false;
 
-    // get size from user
-    // consider your console window size
+    int height = 25;
+    int width = 60;
+    bool animate = true;
+    int animateSpeed = 25;
+    bool showEntropy = true;
 
-    std::cout << "What size of generation would you like?\nHeight: ";
-    std::cin >> height; 
-    std::cout << "Width: ";
-    std::cin >> width; 
+ 
 
-    // ask if user wants it to animate
-    while (true)
+    if (!debug)
     {
+        // get size from user
+        // consider your console window size
+        std::cout << "What size of generation would you like?\nHeight: ";
+        std::cin >> height; 
+        std::cout << "Width: ";
+        std::cin >> width;
 
-        std::cout << "Animate? (y/n): ";
-        std::cin >> animateInput;
-
-
-        std::transform(animateInput.begin(), animateInput.end(), animateInput.begin(), ::toupper);
-
-        if (animateInput == "Y" || animateInput == "N")
+        // ask if user wants it to animate
+        while (true)
         {
-            if (animateInput == "Y") 
+
+            std::string animateInput;
+            std::cout << "Animate? (y/n): ";
+            std::cin >> animateInput;
+
+
+            std::transform(animateInput.begin(), animateInput.end(), animateInput.begin(), ::toupper);
+
+            if (animateInput == "Y" || animateInput == "N")
             {
-                animate = true;
-                break;
+                if (animateInput == "Y")
+                {
+                    animate = true;
+                    break;
+                }
+                if (animateInput == "N")
+                {
+                    animate = false;
+                    break;
+                }
             }
-            if (animateInput == "N") 
-            {
-                animate = false;
-                break;
-            }
+
         }
 
-    }
-    
-    while (animate && animateSpeed == 0)
-    {
-
-        std::cout << "(F)ast, (M)ed, or (S)low? : ";
-        std::cin >> animateInput;
-
-
-        std::transform(animateInput.begin(), animateInput.end(), animateInput.begin(), ::toupper);
-
-        if (animateInput == "F" || animateInput == "M" || animateInput == "S")
+        // ask if user wants it to show the entropy
+        while (animate)
         {
-            if (animateInput == "F")
+            std::string entropyInput;
+
+            std::cout << "Would you like the entropy to be shown in the animation? (y/n): ";
+            std::cin >> entropyInput;
+
+
+            std::transform(entropyInput.begin(), entropyInput.end(), entropyInput.begin(), ::toupper);
+
+            if (entropyInput == "Y" || entropyInput == "N")
             {
-                animateSpeed = 0;
-                break;
+                if (entropyInput == "Y")
+                {
+                    showEntropy = true;
+                    break;
+                }
+                if (entropyInput == "N")
+                {
+                    showEntropy = false;
+                    break;
+                }
             }
-            if (animateInput == "M")
+
+        }
+
+        if (animate)
+        {
+            while (true)
             {
-                animateSpeed = 100;
-                break;
-            }
-            if (animateInput == "S")
-            {
-                animateSpeed = 500;
-                break;
+                std::string animateInput;
+
+                std::cout << "(F)ast, (M)ed, or (S)low? : ";
+                std::cin >> animateInput;
+
+
+                std::transform(animateInput.begin(), animateInput.end(), animateInput.begin(), ::toupper);
+
+                if (animateInput == "F" || animateInput == "M" || animateInput == "S")
+                {
+                    if (animateInput == "F")
+                    {
+                        animateSpeed = 0;
+                        break;
+                    }
+                    if (animateInput == "M")
+                    {
+                        animateSpeed = 100;
+                        break;
+                    }
+                    if (animateInput == "S")
+                    {
+                        animateSpeed = 500;
+                        break;
+                    }
+                }
             }
         }
     }
 
     Map map = Map(height, width);
-    map.collapse(animate, animateSpeed);
+    map.collapse(animate, animateSpeed, showEntropy);
 }

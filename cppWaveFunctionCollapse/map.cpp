@@ -141,7 +141,7 @@ bool Kernal::isCollapsed() {
 /// <param name="options"> the possible tiles for second tile in relation to first tile </param>
 /// <returns> true if any entropy changed </returns>
 bool Kernal::updateEntropy(vector<uChars> options) {
-	int origSize = entropy.size();
+	int origSize = (int)entropy.size();
 
 	if (origSize == 0)
 	{
@@ -213,9 +213,9 @@ std::vector<uChars> Map::getConstraints(uChars uc, int dir)
 /// </summary>
 /// <param name="h"> location(y) </param>
 /// <param name="w"> location(x) </param>
-void Map::chooseRandomFromAvailable(int h, int w) {
+void Map::chooseRandomFromAvailable(int h, int w, bool showEntropy) {
 	board[h][w].assignRandomly();
-	spreadEntropy(h, w);
+	spreadEntropy(h, w, showEntropy);
 	remainingKernals -= 1;
 	if (animate)
 	{
@@ -258,7 +258,7 @@ void Map::findLowestEntropyCount(int & lowest, int & low) {
 /// </summary>
 /// <param name="animate"> will animate if true </param>
 /// <param name="animateSpeed"> speed of animation in milliseconds </param>
-void Map::collapse(bool animated, int animateSpeed) {
+void Map::collapse(bool animated, int animateSpeed, bool showEntropy) {
 	animate = animated;
 	if (animate)
 	{
@@ -292,20 +292,17 @@ void Map::collapse(bool animated, int animateSpeed) {
 
 		// randomly select from lowest and assign randomly from entropy
 		Kernal* temp = lowest.at(random(0, (int)lowest.size() - 1));
-		chooseRandomFromAvailable((*temp).h, (*temp).w);
+		chooseRandomFromAvailable((*temp).h, (*temp).w, showEntropy);
 		
 
 		// update entropy
-		spreadEntropy((*temp).h, (*temp).w);
+		spreadEntropy((*temp).h, (*temp).w, showEntropy);
 
 
 		if (animate)
 		{
 			// pause to create animation
 			std::this_thread::sleep_for(dura);
-
-			//ClearScreen();
-			//draw();
 		}
 
 
@@ -323,15 +320,49 @@ void Map::collapse(bool animated, int animateSpeed) {
 }
 
 /// <summary>
+/// Visual indicate the amount of entropy remaining.
+/// </summary>
+/// <param name="h"></param>
+/// <param name="w"></param>
+void Map::drawEntropy(int h, int w) {
+	if (board[h][w].isCollapsed()) {
+		return;
+	}
+
+	// EMPTY = 32,	//  
+	// LOW = 176,	// ░
+	// MID = 177,	// ▒
+	// DARK = 178,	// ▓
+	uChars uChar = EMPTY;
+	int entropyCount = board[h][w].entropyCount();
+	if (entropyCount <= 8) {
+		uChar = DARK;
+	}
+	else if (entropyCount <= 18) {
+		uChar = MID;
+	}
+	else if (entropyCount <= 40) {
+		uChar = LOW;
+	}
+
+	gotoxy(w, h);
+	std::this_thread::sleep_for(dura);
+	printf("%c", uChar);
+}
+
+/// <summary>
 /// Once a Kernal has been modified (collapsed or entropy is changed)
 /// continue spreading the entropy possibilities to keep a valid map
 /// </summary>
 /// <param name="h"> height of board </param>
 /// <param name="w"> width of board </param>
-void Map::spreadEntropy(int h, int w) {
+void Map::spreadEntropy(int h, int w, bool showEntropy) {
 	// check each direction and try to update entropy
 	// if it does update, continue to spread
 
+	if (showEntropy) {
+		drawEntropy(h, w);
+	}
 	// North
 	if (h > 0)
 	{
@@ -351,7 +382,10 @@ void Map::spreadEntropy(int h, int w) {
 
 			// recurse if we changed the entropy in that direction
 			if (board[h - 1][w].updateEntropy(possibilities)) {
-				spreadEntropy(h - 1, w);
+				//if (showEntropy) {
+				//	drawEntropy(h, w);
+				//}
+				spreadEntropy(h - 1, w, showEntropy);
 			}
 		}
 	}
@@ -374,7 +408,10 @@ void Map::spreadEntropy(int h, int w) {
 
 			// recurse if we changed the entropy in that direction
 			if (board[h][w + 1].updateEntropy(possibilities)) {
-				spreadEntropy(h, w + 1);
+				//if (showEntropy) {
+				//	drawEntropy(h, w);
+				//}
+				spreadEntropy(h, w + 1, showEntropy);
 			}
 		}
 	}
@@ -397,7 +434,10 @@ void Map::spreadEntropy(int h, int w) {
 
 			// recurse if we changed the entropy in that direction
 			if (board[h + 1][w].updateEntropy(possibilities)) {
-				spreadEntropy(h + 1, w);
+				//if (showEntropy) {
+				//	drawEntropy(h, w);
+				//}
+				spreadEntropy(h + 1, w, showEntropy);
 			}
 		}
 	}
@@ -420,7 +460,10 @@ void Map::spreadEntropy(int h, int w) {
 
 			// recurse if we changed the entropy in that direction
 			if (board[h][w - 1].updateEntropy(possibilities)) {
-				spreadEntropy(h, w - 1);
+				//if (showEntropy) {
+				//	drawEntropy(h, w);
+				//}
+				spreadEntropy(h, w - 1, showEntropy);
 			}
 		}
 	}
@@ -641,7 +684,7 @@ void Map::pupulateConstraints()
 
 
 
-	maxEntropy = constraints.size();
+	maxEntropy = (int)constraints.size();
 }
 
 #pragma endregion
